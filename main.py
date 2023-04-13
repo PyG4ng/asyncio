@@ -30,11 +30,11 @@ async def download_links(links, client_session):
 
 
 async def get_people(people_id, client_session):
-    if people_id == 17 or people_id > 83:
-        return
     async with client_session.get(f'https://swapi.dev/api/people/{people_id}') as response:
         data = {}
         json_data = await response.json()
+        if json_data.get('detail') == 'Not found':
+            return
         films_link = json_data.get('films', [])
         species_link = json_data.get('species', [])
         vehicles_link = json_data.get('vehicles', [])
